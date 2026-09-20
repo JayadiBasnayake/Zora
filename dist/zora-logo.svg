@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 96" role="img" aria-labelledby="title desc">
+  <title id="title">ZORA</title>
+  <desc id="desc">ZORA orbital transportation logo</desc>
+  <defs>
+    <linearGradient id="cyan-violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#22D3EE"/>
+      <stop offset="0.58" stop-color="#38BDF8"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+  </defs>
+  <g fill="none" stroke="url(#cyan-violet)" stroke-linecap="round">
+    <ellipse cx="48" cy="48" rx="43" ry="17" transform="rotate(-28 48 48)" stroke-width="5"/>
+    <ellipse cx="48" cy="48" rx="43" ry="17" transform="rotate(30 48 48)" stroke-width="5"/>
+    <path d="M15 65c16-17 34-31 60-38" stroke-width="4"/>
+  </g>
+  <circle cx="48" cy="48" r="5" fill="#F8FAFC"/>
+  <path d="M45 48l-8-4 3 8zM51 48l8-4-3 8z" fill="#F8FAFC"/>
+  <text x="112" y="68" fill="#F8FAFC" font-family="Space Grotesk, Arial, sans-serif" font-size="58" font-weight="600" letter-spacing="9">ZORA</text>
+</svg>
