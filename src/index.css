@@ -1,0 +1,150 @@
+/* @import url() FONT IMPORTS MUST ALWAYS BE AT THE VERY TOP OF THIS FILE, ABOVE THE TAILWIND IMPORTS — DO NOT DELETE THIS COMMENT */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+/* CRITICAL: THE FOLLOWING TAILWIND IMPORTS MUST NEVER BE DELETED OR REORDERED — DO NOT DELETE THIS COMMENT */
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+/* END TAILWIND IMPORTS — ALL OTHER CSS MUST GO BELOW THIS LINE */
+
+html,
+body,
+#root {
+  min-height: 100%;
+  width: 100%;
+}
+:root {
+  --color-base: 6 19 34;
+  --color-surface: 11 32 54;
+  --color-surface-raised: 16 49 77;
+  --color-surface-high: 22 66 99;
+  --color-cyan: 34 211 238;
+  --color-violet: 139 92 246;
+  --color-mint: 94 234 212;
+  --color-amber: 251 191 36;
+  --color-coral: 251 113 133;
+  --color-ink: 248 250 252;
+  --color-ink-muted: 168 183 201;
+  --color-ink-dim: 120 144 168;
+  --color-hairline: 168 183 201;
+  --glass-top: rgba(22, 66, 99, 0.7);
+  --glass-bottom: rgba(11, 32, 54, 0.76);
+  --map-ocean: #061a2b;
+  --map-ocean-highlight: #16466a;
+  --map-island: #0d3440;
+  --map-coastline: #5eead4;
+  --map-relief: #7dd3a7;
+  --map-river: #67e8f9;
+  --map-shadow: #020813;
+  --map-landmark: #dbeafe;
+  --map-landmark-stroke: #94a3b8;
+  --map-label-muted: #94a3b8;
+  --map-label: #cbd5e1;
+  --map-label-active: #f8fafc;
+  --map-station: #071522;
+  --map-transit: #22d3ee;
+  --map-air: #c4b5fd;
+  --map-vehicle-window: #020813;
+}
+.theme-light {
+  --color-base: 232 240 244;
+  --color-surface: 255 255 255;
+  --color-surface-raised: 247 250 251;
+  --color-surface-high: 225 237 241;
+  --color-cyan: 7 111 137;
+  --color-violet: 101 73 165;
+  --color-mint: 13 117 99;
+  --color-amber: 157 92 0;
+  --color-coral: 183 50 68;
+  --color-ink: 18 39 53;
+  --color-ink-muted: 67 87 101;
+  --color-ink-dim: 92 115 129;
+  --color-hairline: 103 130 143;
+  --glass-top: rgba(255, 255, 255, 0.94);
+  --glass-bottom: rgba(241, 247, 248, 0.92);
+  --map-ocean: #d8eaf0;
+  --map-ocean-highlight: #f6fcfd;
+  --map-island: #dcebdc;
+  --map-coastline: #147d83;
+  --map-relief: #6b9d79;
+  --map-river: #3b9eb0;
+  --map-shadow: #6a8790;
+  --map-landmark: #ffffff;
+  --map-landmark-stroke: #66818b;
+  --map-label-muted: #4f6975;
+  --map-label: #274b5a;
+  --map-label-active: #102a43;
+  --map-station: #f8fcfc;
+  --map-transit: #087e96;
+  --map-air: #6950a6;
+  --map-vehicle-window: #183746;
+}
+body {
+  background-color: rgb(var(--color-base));
+  color: rgb(var(--color-ink));
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+*:focus-visible {
+  outline: 2px solid #22d3ee;
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+::selection {
+  background: rgba(34, 211, 238, 0.28);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.28) transparent;
+}
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+*::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.24);
+  border-radius: 999px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+.glass {
+  background: linear-gradient(180deg, var(--glass-top) 0%, var(--glass-bottom) 100%);
+  backdrop-filter: blur(16px);
+}
+.grid-field {
+  background-image: linear-gradient(rgb(var(--color-cyan) / 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--color-cyan) / 0.07) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+.map-canvas {
+  background: radial-gradient(circle at 30% 18%, rgb(var(--color-cyan) / 0.12), transparent 42%),
+    linear-gradient(145deg, var(--map-ocean-highlight), var(--map-ocean));
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+input[type="date"],
+input[type="time"] {
+  min-width: 0;
+  color-scheme: dark;
+}
+.theme-light input[type="date"],
+.theme-light input[type="time"] {
+  color-scheme: light;
+}
