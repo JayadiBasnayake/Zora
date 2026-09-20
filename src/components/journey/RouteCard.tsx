@@ -46,6 +46,7 @@ export function RouteCard({ route, selected = false, onSelect, onBook }: RouteCa
                 {route.departs} → {route.arrives}
               </span>
             </p>
+            {route.description && <p className="mt-1 text-xs text-ink-muted">{route.description}</p>}
           </div>
           <div className="text-right">
             <p className="font-display text-xl font-semibold text-ink">{route.cost.toFixed(1)}</p>
@@ -69,6 +70,7 @@ export function RouteCard({ route, selected = false, onSelect, onBook }: RouteCa
           <Metric icon={RepeatIcon} label="Transfers" value={String(route.transfers)} />
           <Metric icon={GaugeIcon} label="Reliability" value={`${route.reliability}%`} tint="#22D3EE" />
           <Metric icon={FootprintsIcon} label="Walking" value={route.walkingM === 0 ? 'None' : `${route.walkingM} m`} />
+          <Metric icon={GaugeIcon} label="Energy" value={route.energyKwh === undefined ? '—' : `${route.energyKwh.toFixed(1)} kWh`} />
         </dl>
       </button>
 

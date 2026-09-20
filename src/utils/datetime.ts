@@ -11,6 +11,20 @@ export const toDateInput = (d: Date) => `${d.getFullYear()}-${pad(d.getMonth() +
 /** Local time as the HH:MM string an <input type="time"> uses. */
 export const toTimeInput = (d: Date) => `${pad(d.getHours())}:${pad(d.getMinutes())}`;
 
+export function formatDateLabel(date: Date): string {
+  return new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'long' }).format(date);
+}
+
+export function formatShortDateLabel(date: Date): string {
+  return new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', weekday: 'short' }).format(date);
+}
+
+export function addDays(date: Date, days: number): Date {
+  const result = new Date(date.getTime());
+  result.setDate(result.getDate() + days);
+  return result;
+}
+
 /**
  * The nearest upcoming departure slot: "now" rounded up to the next 5 minutes.
  * 14:07 -> 14:10, 14:10 -> 14:15. After 23:55 it rolls over to tomorrow.

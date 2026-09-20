@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MinusIcon, PlusIcon, RotateCcwIcon } from 'lucide-react';
 import { MAP_VIEWBOX, landmarkStations, liveVehicles, networkAlerts, networkLines, stationById, stations } from '../../data/network';
 import type { LayerId } from '../../data/network';
@@ -55,6 +55,7 @@ export function CityMap({
 }: CityMapProps) {
   const t = useElapsed(20);
   const visibleLines = useMemo(() => networkLines.filter((l) => layers.includes(l.layer)), [layers]);
+  const routePoints = useMemo(() => (highlightPath ?? []).map((id) => stationById(id)).filter((station) => station.lat !== undefined && station.lon !== undefined), [highlightPath]);
 
   const vehicles = useMemo(
     () =>
@@ -71,6 +72,31 @@ export function CityMap({
   const [view, setView] = useState({ x: 0, y: 0, k: 1 });
   const drag = useRef<{ startX: number; startY: number; viewX: number; viewY: number } | null>(null);
   const [dragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    if (routePoints.length < 2) {
+      setView({ x: 0, y: 0, k: 1 });
+      return;
+    }
+    const padding = 120;
+    const minX = Math.min(...routePoints.map((point) => point.x));
+    const maxX = Math.max(...routePoints.map((point) => point.x));
+    const minY = Math.min(...routePoints.map((point) => point.y));
+    const maxY = Math.max(...routePoints.map((point) => point.y));
+    const routeWidth = Math.max(1, maxX - minX);
+    const routeHeight = Math.max(1, maxY - minY);
+    const k = Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, Math.min(
+      (MAP_VIEWBOX.width - padding * 2) / routeWidth,
+      (MAP_VIEWBOX.height - padding * 2) / routeHeight
+    )));
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    setView({
+      k,
+      x: MAP_VIEWBOX.width / 2 - centerX * k,
+      y: MAP_VIEWBOX.height / 2 - centerY * k
+    });
+  }, [routePoints]);
 
   const clampK = (k: number) => Math.min(MAX_ZOOM, Math.max(MIN_ZOOM, k));
 
@@ -236,6 +262,22 @@ export function CityMap({
 
             }
 
+            {routePoints.length > 1 &&
+            <g aria-label="Selected journey endpoints">
+                {[routePoints[0], routePoints[routePoints.length - 1]].map((point, index) =>
+              <g key={`${point.id}-${index}`}>
+                    <circle cx={point.x} cy={point.y} r={13} fill={index === 0 ? '#22D3EE' : '#FB7185'} fillOpacity={0.18} />
+                    <circle cx={point.x} cy={point.y} r={6} fill={index === 0 ? '#0E7490' : '#BE123C'} stroke="#FFFFFF" strokeWidth={2} />
+                    {showLabels &&
+                <text x={point.x + 11} y={point.y - 10} fill="var(--map-label-active)" fontSize={11} fontWeight={700} fontFamily="Inter, sans-serif">
+                          {index === 0 ? 'Origin' : 'Destination'}
+                        </text>
+                }
+                  </g>
+              )}
+              </g>
+            }
+
             {/* alerts */}
             {showAlerts &&
             networkAlerts.map((a) => {
@@ -253,7 +295,7 @@ export function CityMap({
             landmarkStations.map((p) =>
             <g key={p.id}>
                 <circle cx={p.x} cy={p.y} r={stationRadius.landmark} fill="var(--map-landmark)" fillOpacity={0.72} stroke="var(--map-landmark-stroke)" strokeWidth={1} />
-                {showLabels &&
+                {showLabels && !highlightPath?.length &&
               <text
                 x={p.x + stationRadius.landmark + 5}
                 y={p.y + 3}
@@ -327,7 +369,7 @@ export function CityMap({
       </div>
 
       {navigable &&
-      <div className="absolute bottom-3 right-3 z-10 flex flex-col overflow-hidden rounded-xl border border-hairline bg-surface/90 shadow-lg backdrop-blur">
+      <div className="absolute bottom-20 left-3 z-10 flex flex-col overflow-hidden rounded-xl border border-hairline bg-surface/90 shadow-lg backdrop-blur sm:bottom-4 sm:left-4">
           <button
           type="button"
           aria-label="Zoom in"

@@ -1,7 +1,8 @@
 
 import { useEffect, useState } from 'react';
 import { NfcIcon, ShieldCheckIcon } from 'lucide-react';
-import { upcomingJourney, user } from '../../data/journey';
+import { upcomingJourney, user as demoUser } from '../../data/journey';
+import { useAuth } from '../../state/AuthState';
 import { Badge } from '../ui/Badge';
 
 /** Deterministic block pattern standing in for the pass's rotating QR token. */
@@ -13,6 +14,7 @@ const qrCells = (seed: string) => Array.from({ length: 144 }, (_, i) => {
 });
 
 export function JourneyPass() {
+  const { user } = useAuth();
   const [token, setToken] = useState(upcomingJourney.token);
   const [seconds, setSeconds] = useState(60);
   useEffect(() => {
@@ -62,8 +64,8 @@ export function JourneyPass() {
         </div>
 
         <dl className="grid flex-1 grid-cols-2 gap-x-4 gap-y-3.5">
-          <Row label="Passenger" value={user.fullName} />
-          <Row label="Pass ID" value={user.passId} mono />
+          <Row label="Passenger" value={user?.fullName ?? demoUser.fullName} />
+          <Row label="Pass ID" value={user?.passId ?? demoUser.passId} mono />
           <Row label="Journey" value={`${upcomingJourney.origin} → ${upcomingJourney.destination}`} />
           <Row label="Vehicle" value={upcomingJourney.vehicle} mono />
           <Row label="Gate" value={upcomingJourney.gate} />

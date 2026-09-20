@@ -88,7 +88,7 @@ export function AppShell({ children }: {children: React.ReactNode;}) {
       <header className="sticky top-0 z-50 border-b border-hairline bg-base/85 backdrop-blur-xl">
         <div className="mx-auto flex h-16 w-full max-w-[1600px] items-center gap-4 px-4 sm:px-6">
           <Link to="/" className="flex items-center" aria-label="ZORA home">
-            <img src="/Logo.jpeg" alt="ZORA" className="h-9 w-[120px] rounded object-cover object-center" />
+            <img src="/zora-logo.svg" alt="ZORA" className="h-9 w-[120px] object-contain object-left" />
           </Link>
 
           <nav aria-label="Primary" className="ml-4 hidden items-center gap-0.5 lg:flex">

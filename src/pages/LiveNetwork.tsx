@@ -61,9 +61,9 @@ export function LiveNetwork() {
           setPanelOpen(true);
         }} />
 
-      {/* Top stack: search, then mode chips. One column, so nothing can overlap on a phone. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex flex-col gap-2 p-3 sm:inset-x-auto sm:left-6 sm:top-4 sm:w-[380px] sm:p-0">
-        <div className="pointer-events-auto relative">
+      {/* Search stays centered while the mode controls occupy a separate side rail. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex justify-center p-3 sm:top-4 sm:p-0">
+        <div className="pointer-events-auto relative w-full max-w-[520px]">
           <div className="glass flex h-12 items-center gap-2.5 rounded-xl border border-hairline px-3.5 focus-within:border-cyan-line">
             <SearchIcon aria-hidden className="h-4 w-4 text-ink-dim" />
             <label htmlFor="map-search" className="sr-only">
@@ -105,7 +105,7 @@ export function LiveNetwork() {
           {query && matches.length === 0 && <p role="status" className="glass absolute inset-x-0 top-full z-30 mt-2 rounded-xl border border-hairline p-3 text-[13px] text-ink-muted">No stations match “{query}”.</p>}
         </div>
 
-        <div className="pointer-events-auto no-scrollbar flex gap-2 overflow-x-auto pb-1" role="group" aria-label="Transport modes shown on the map">
+        <div className="pointer-events-auto absolute right-3 top-16 flex w-[164px] flex-col gap-2 sm:right-6 sm:top-20" role="group" aria-label="Transport modes shown on the map">
           {layerOptions.map((l) => {
             const on = layers.includes(l.id);
             return (
@@ -114,7 +114,7 @@ export function LiveNetwork() {
                 type="button"
                 aria-pressed={on}
                 onClick={() => toggleLayer(l.id)}
-                className={`flex min-h-11 shrink-0 items-center gap-2 rounded-xl border px-3 text-xs font-semibold backdrop-blur-xl transition-colors duration-150 ease-out ${on ? 'border-cyan-line bg-base/85 text-ink' : 'border-hairline bg-base/60 text-ink-dim'}`}>
+                className={`flex min-h-11 w-full items-center gap-2 rounded-xl border px-3 text-xs font-semibold shadow-lg backdrop-blur-xl transition-colors duration-150 ease-out ${on ? 'border-cyan-line bg-base/85 text-ink' : 'border-hairline bg-base/60 text-ink-dim'}`}>
                 <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: on ? l.color : 'transparent', border: `2px solid ${l.color}` }} />
                 {l.label}
               </button>);

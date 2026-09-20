@@ -44,6 +44,8 @@ export interface RouteOption {
   transfers: number;
   reliability: number;
   walkingM: number;
+  energyKwh?: number;
+  description?: string;
   departs: string;
   arrives: string;
   tag?: string;

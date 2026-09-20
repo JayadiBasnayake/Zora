@@ -31,7 +31,7 @@ export function SignIn() {
   return (
     <div className="min-h-screen bg-base px-4 py-8 text-ink sm:px-6">
       <header className="mx-auto flex max-w-[1100px] items-center justify-between">
-        <Link to="/signin" aria-label="ZORA sign in"><img src="/Logo.jpeg" alt="ZORA" className="h-9 w-[120px] rounded object-cover object-center" /></Link>
+        <Link to="/signin" aria-label="ZORA sign in"><img src="/zora-logo.svg" alt="ZORA" className="h-9 w-[120px] object-contain object-left" /></Link>
         <Link to="/emergency" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-coral/40 bg-coral-soft px-3 text-sm font-semibold text-coral"><ShieldAlertIcon aria-hidden className="h-4 w-4" /> Emergency access</Link>
       </header>
       <main className="mx-auto grid max-w-[1100px] gap-6 py-12 lg:grid-cols-[minmax(0,440px)_minmax(0,1fr)] lg:items-center">

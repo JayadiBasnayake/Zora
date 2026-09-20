@@ -1,4 +1,7 @@
 import type { TrackedStep } from '../types';
+import { addDays, formatDateLabel, formatShortDateLabel } from '../utils/datetime';
+
+const today = new Date();
 
 export const user = {
   name: 'Jayadi',
@@ -16,7 +19,7 @@ export const upcomingJourney = {
   depart: '08:40',
   arrive: '09:32',
   status: 'On schedule' as const,
-  date: 'Today · 18 September',
+  date: `Today · ${formatDateLabel(today)}`,
   vehicle: 'HM-3310',
   gate: 'Gate 4 · Platform 2',
   seat: 'Carriage 4 · Seat 12A',
@@ -26,9 +29,9 @@ export const upcomingJourney = {
 };
 
 export const laterJourneys = [
-{ id: 'l1', route: 'Kandy → Colombo Central', when: 'Today · 18:10', mode: 'Intercity Express', status: 'Booked' },
-{ id: 'l2', route: 'Home → Innovation Campus', when: 'Tomorrow · 07:50', mode: 'Metro + Shuttle', status: 'Auto-booked' },
-{ id: 'l3', route: 'Home → Katunayake Aeroport', when: 'Sat 20 Sep · 05:20', mode: 'Metro + Air Taxi', status: 'Booked' }];
+{ id: 'l1', route: 'Kandy → Colombo Central', when: `Today · 18:10`, mode: 'Intercity Express', status: 'Booked' },
+{ id: 'l2', route: 'Home → Innovation Campus', when: `Tomorrow · 07:50`, mode: 'Metro + Shuttle', status: 'Auto-booked' },
+{ id: 'l3', route: 'Home → Katunayake Aeroport', when: `${formatShortDateLabel(addDays(today, 2))} · 05:20`, mode: 'Metro + Air Taxi', status: 'Booked' }];
 
 
 export const pastJourneys = [

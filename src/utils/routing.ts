@@ -23,6 +23,14 @@ const modeFarePerKm: Record<TransportModeId, number> = {
   shuttle: 0.06,
   walk: 0
 };
+const modeEnergyKwhPerKm: Record<TransportModeId, number> = {
+  metro: 0.14,
+  intercity: 0.12,
+  airtaxi: 0.68,
+  bus: 0.09,
+  shuttle: 0.11,
+  walk: 0
+};
 const lineMode = (line: NetworkLine): TransportModeId => {
   if (line.layer === 'air') return 'airtaxi';
   if (line.layer === 'bus') return line.id.startsWith('R') ? 'shuttle' : 'bus';
@@ -217,11 +225,11 @@ export function buildRouteOptions(fromText: string, toText: string, opts: BuildR
 
   const startMin = /^\d{2}:\d{2}$/.test(opts.timeHHMM) ? toMinutes(opts.timeHHMM) : toMinutes('08:40');
 
-  type Objective = { key: 'fastest' | 'cheapest' | 'fewest'; tag: string; weight: (e: Edge) => number };
+  type Objective = { key: 'fastest' | 'eco' | 'accessible'; tag: string; name: string; description: string; weight: (e: Edge) => number };
   const objectives: Objective[] = [
-  { key: 'fastest', tag: 'Fastest', weight: (e) => e.minutes },
-  { key: 'cheapest', tag: 'Cheapest', weight: (e) => e.cost * 100 },
-  { key: 'fewest', tag: 'Fewest transfers', weight: () => 1 }];
+  { key: 'fastest', tag: 'Fastest', name: 'High-speed route', description: 'Prioritises the shortest travel time.', weight: (e) => e.minutes },
+  { key: 'eco', tag: 'Eco', name: 'Low-energy route', description: 'Prioritises electric rail and low energy use.', weight: (e) => e.km * modeEnergyKwhPerKm[e.mode] },
+  { key: 'accessible', tag: 'Accessible', name: 'Accessibility route', description: 'Prioritises fewer changes and step-free connections.', weight: (e) => e.minutes + 8 }];
 
 
   const seen = new Set<string>();
@@ -263,18 +271,24 @@ export function buildRouteOptions(fromText: string, toText: string, opts: BuildR
       const km = leg.durationMin / 60 * modeSpeedKmh[mode];
       return sum + km * modeFarePerKm[mode];
     }, 0) * Math.max(1, opts.passengers)).toFixed(2));
+    const energyKwh = Number(legs.reduce((sum, leg) => {
+      const km = leg.durationMin / 60 * modeSpeedKmh[leg.mode];
+      return sum + km * modeEnergyKwhPerKm[leg.mode];
+    }, 0).toFixed(1));
     const transfers = Math.max(0, legs.length - 1);
     const airtaxiLegs = legs.filter((l) => l.mode === 'airtaxi').length;
     const reliability = Math.max(90, Math.min(99, 99 - transfers * 2 - airtaxiLegs * 2));
 
     options.push({
       id: obj.key.toUpperCase(),
-      name: `Via ${legs.map((l) => l.label).filter((v, i, a) => a.indexOf(v) === i).join(' + ')}`,
+      name: obj.name,
       durationMin: totalMin,
       cost: totalCost || 0.5,
       transfers,
       reliability,
       walkingM,
+      energyKwh,
+      description: obj.description,
       departs: legs[0].depart,
       arrives: legs[legs.length - 1].arrive,
       tag: obj.tag,

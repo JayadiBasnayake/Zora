@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { SendIcon, SparklesIcon, XIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { orbitSuggestions, orbitThread } from '../../data/orbit';
+import { orbitSuggestions, orbitThread, orbitWelcomeThread } from '../../data/orbit';
 import type { OrbitAction, OrbitMessage } from '../../types';
 import { OrbitMessageBubble } from './OrbitMessageBubble';
 import { useAppState } from '../../state/AppState';
@@ -18,11 +18,11 @@ const messageId = () => {
 };
 
 export function OrbitDock({ open, onClose }: {open: boolean;onClose: () => void;}) {
-  const [thread, setThread] = useState<OrbitMessage[]>(orbitThread);
-  const [draft, setDraft] = useState('');
-  const [thinking, setThinking] = useState(false);
   const { activeJourney, emergency, holdShuttle, keepJourney, dispatchEmergency } = useAppState();
   const { user } = useAuth();
+  const [thread, setThread] = useState<OrbitMessage[]>(() => activeJourney ? orbitThread : orbitWelcomeThread);
+  const [draft, setDraft] = useState('');
+  const [thinking, setThinking] = useState(false);
   const navigate = useNavigate();
   const endRef = useRef<HTMLDivElement>(null);
   const timeoutRef = useRef<number | null>(null);

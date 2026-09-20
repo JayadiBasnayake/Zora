@@ -23,6 +23,14 @@ export const orbitThread: OrbitMessage[] = [
   actions: [{ label: 'View Alternative', action: 'VIEW_ALTERNATIVE' }, { label: 'Keep Current Journey', action: 'KEEP_JOURNEY' }]
 }];
 
+export const orbitWelcomeThread: OrbitMessage[] = [{
+  id: 'welcome',
+  from: 'orbit',
+  body: 'Welcome to ORBIT. I can help you plan a journey, find accessible routes, and understand the live network.',
+  time: 'now',
+  severity: 'info'
+}];
+
 
 export const orbitSuggestions = [
 'Will I make my connection?',
